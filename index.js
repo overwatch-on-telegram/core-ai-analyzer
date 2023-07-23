@@ -82,7 +82,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 `.trim();
 
     if (tokenStatistics.isPartiallyValidated) {
-        message += '\n\n⚠️ Waiting for liquidity lock/burn.\n\n';
+        message += '\n\n🟥 Waiting for liquidity lock/burn.\n\n';
     }
 
     message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
@@ -90,9 +90,9 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
     message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Trading Security*\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
     if (showAuditReport && !auditReport) {
-        message += `\n\n*${tokenStatistics.tokenAuditData.token_name} Audit Report*\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
+        message += `\n\n$*${tokenStatistics.tokenAuditData.token_name} AI Audit*\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
     } else {
-        message += `\n\n*${tokenStatistics.tokenAuditData.token_name} AI Audit*\n\n${auditReport.issues?.map((issue, i) => {
+        message += `\n\n$*${tokenStatistics.tokenAuditData.token_name} AI Audit*\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
             return `*Issue #${i+1}*\n\n${markdownEscape(issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation, [
                 'number signs',
                 'slashes',
@@ -103,8 +103,10 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
                 'angle brackets',
                 'angle brackets'
             ])}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
-        }).join('\n\n')}\n\n[Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)\n\n_Powered by BlockRover._`;
+        }).join('\n\n') : ''}\n\n[Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)`;
     }
+
+    message += `\n\n_Disclaimer: Nothing posted in this channel is financial advice but rather technical reviews of erc20 token smart contracts\. Our tools are still in BETA mode and tokens may require an additional manual review at this time\. Powered by BlackRover\.io_`;
 
     return message;
 
