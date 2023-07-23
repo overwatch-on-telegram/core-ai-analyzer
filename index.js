@@ -41,6 +41,8 @@ const fetchTransactionData = (token) => {
         .then((data) => data.json());
 }
 
+const escapeLink = (text) => text.replace(/[\[\]\(\)]/g, '\\$&');
+
 export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, auditReport = undefined, showLockStatus = false) => {
 
     const marketCap = aveta(tokenStatistics.tokenMarketData.circSupply * tokenStatistics.tokenMarketData.price_usd, {
@@ -67,7 +69,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         digits: 5
     });
 
-    let message = `\n*$${tokenStatistics.tokenAuditData.token_name} Token Stats*\n
+    let message = `\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Stats*\n
 🛒 *Total Supply:* $10bn
 🏦 *Circ. Supply:* $${circSupply}
 💰 *Marketcap:* $${marketCap}
@@ -83,20 +85,20 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 
     if (showLockStatus) {
         if (!tokenStatistics.isLocked && !tokenStatistics.isBurnt) {
-            message += '\n\n🟥 Waiting for liquidity lock/burn.\n\n';
+            message += '\n\n\n🟥 Waiting for liquidity lock/burn.\n';
         } else {
-            message += '\n\n🟩 Liquidity is locked/burnt.\n\n';
+            message += '\n\n\n🟩 Liquidity is locked/burnt.\n';
         }
     }
 
-    message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
+    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
 
-    message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Trading Security*\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
+    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
     if (showAuditReport && !auditReport) {
-        message += `\n\n$*${tokenStatistics.tokenAuditData.token_name} AI Audit*\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
+        message += `\n\n$*${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
     } else {
-        message += `\n\n$*${tokenStatistics.tokenAuditData.token_name} AI Audit*\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
+        message += `\n\n$*${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
             return `*Issue #${i+1}*\n\n${markdownEscape(issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation, [
                 'number signs',
                 'slashes',
@@ -107,7 +109,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
                 'angle brackets',
                 'angle brackets'
             ])}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
-        }).join('\n\n') + '\n\n' : ''}📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)`;
+        }).join('\n\n') + '\n\n\n' : ''}📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)`;
     }
 
     const uniswapLink = `https://app.uniswap.org/#/swap?inputCurrency=${tokenStatistics.contractAddress}&outputCurrency=ETH`;
