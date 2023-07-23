@@ -215,9 +215,13 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         }
     });
 
+    /*
     const isPartiallyValidated = goPlusContractSecurity.every((item) => item.isPositive || (item.name === 'Owner Address' || item.name === 'Open Source'))
         && goPlusTradingSecurity.every((item) => item.isPositive || (item.name === 'Buy Tax' || item.name === 'Sell Tax' || item.name === 'In main Dex'))
-        && goPlusTradingSecurity.filter((item) => item.name === 'Buy Tax' || item.name === 'Sell Tax').every((item) => item.value < 0.1);
+        && goPlusTradingSecurity.filter((item) => item.name === 'Buy Tax' || item.name === 'Sell Tax').every((item) => item.value < 0.1);*/
+
+    const isPartiallyValidated = goPlusContractSecurity.find((i) => i.name === 'Mintable').isPositive
+            && goPlusTradingSecurity.find((i) => i.name === 'Honeypot').isPositive;
 
     const isLockedOrBurnt = holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
 
