@@ -140,7 +140,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         {'prop': 'is_proxy', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Proxy'},
         {'prop': 'is_mintable', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Mintable'},
         {'prop': 'can_take_back_ownership', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Take Back Ownership'},
-        {'prop': 'owner_address', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => value, 'format_value': (value) => value || 'Unknown', 'display_name': 'Owner Address'},
+        {'prop': 'owner_address', 'parse_value': (value) => value, 'is_positive': (value) => value, 'format_value': (value) => value || 'Unknown', 'display_name': 'Owner Address'},
         {'prop': 'owner_change_balance', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Owner Change Balance'},
         {'prop': 'hidden_owner', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Hidden Owner'},
         {'prop': 'selfdestruct', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Self-destruct'},
