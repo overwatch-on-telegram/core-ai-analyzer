@@ -31,6 +31,11 @@ const fetchTokenData = (token) => {
         .then((data) => data?.result?.[token]);
 }
 
+export const fetchSecondTokenData = (token) => {
+    return fetch(`https://dapp.herokuapp.com/token-audit?contract=${token}`)
+        .then((data) => data.json())
+}
+
 const fetchTokenMarketingWallet = (token) => {
     return fetch(`https://dapp.herokuapp.com/marketing-wallet?contract=${token}`)
         .then((data) => data.json());
@@ -81,7 +86,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 👥 *Holders:* ${holderCount}
 #️⃣ *Holder score:* ${tokenStatistics.tokenAuditData.holderScore || 'Unknown'}
 📢 *Marketing Wallet:* ${tokenStatistics.marketingWalletData?.marketingAddress ? `https://etherscan.io/address/${tokenStatistics.marketingWalletData?.marketingAddress}` : 'Unknown'}
-💵 *Liquidity*: ${liquidity} (${tokenStatistics.isLocked ? `[${Math.round(tokenStatistics.lockedPercentage * 100)}%](${tokenStatistics.tokenAuditData.lpLockLink})` : `${Math.round(tokenStatistics.lockedPercentage * 100)}%`} locked, ${tokenStatistics.isBurnt ? `[${Math.round(tokenStatistics.burntPercentage * 100)}%](${tokenStatistics.tokenAuditData.burnLink})` : `${Math.round(tokenStatistics.burntPercentage * 100)}%`} burnt)
+💵 *Liquidity*: ${liquidity} (${tokenStatistics.isLocked ? `[${Math.round(tokenStatistics.lockedPercentage * 100)}%](${tokenStatistics.secondTokenAuditData.lpLockLink})` : `${Math.round(tokenStatistics.lockedPercentage * 100)}%`} locked, ${tokenStatistics.isBurnt ? `[${Math.round(tokenStatistics.burntPercentage * 100)}%](${tokenStatistics.secondTokenAuditData.burnLink})` : `${Math.round(tokenStatistics.burntPercentage * 100)}%`} burnt)
 🔗 *Pair address*: ${tokenStatistics.pairAddress ? `[${tokenStatistics.pairAddress}](https://etherscan.io/address/${tokenStatistics.pairAddress})` : 'Unknown'}
 `.trim();
 
@@ -134,6 +139,8 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
     if (!tokenAuditData || !tokenAuditData.token_name) {
         throw new Error('Invalid contract address');
     }
+
+    const secondTokenAuditData = await fetchSecondTokenData(contractAddress, forcePairAddress);
 
     const tokenMarketData = await fetchMarketData(contractAddress).catch(() => null);
     const marketingWalletData = await fetchTokenMarketingWallet(contractAddress).catch(() => null);
@@ -232,6 +239,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         contractAddress,
         
         tokenAuditData,
+        secondTokenAuditData,
         tokenMarketData,
         marketingWalletData,
         transactionData,
