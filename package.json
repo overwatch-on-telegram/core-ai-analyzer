@@ -1,12 +1,13 @@
 {
-  "name": "goplus-ai-analyzer-js",
-  "version": "1.0.0",
+  "name": "@blockrover/goplus-ai-analyzer-js",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
+  "repository": {"url": "https://github.com/@blockrover/goplus-ai-analyzer-js"},
   "author": "",
   "license": "ISC",
   "type": "module"
