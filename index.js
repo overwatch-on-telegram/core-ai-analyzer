@@ -1,7 +1,7 @@
 import { aveta } from 'aveta';
 import markdownEscape from 'markdown-escape';
 
-export const WAITING_GENERATION_AUDIT_MESSAGE = 'generating audit report (it can take a few mins)...';
+export const WAITING_GENERATION_AUDIT_MESSAGE = 'Generating Audit Report...';
 
 export const triggerAudit = (token) => {
     return fetch(`https://api.blockrover.io/audit/${token}`, {
