@@ -82,7 +82,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 `.trim();
 
     if (tokenStatistics.isPartiallyValidated) {
-        message += '\n\nWaiting for liquidity lock/burn.\n\n';
+        message += '\n\n⚠️ Waiting for liquidity lock/burn.\n\n';
     }
 
     message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
