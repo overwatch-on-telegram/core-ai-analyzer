@@ -41,7 +41,9 @@ const fetchTransactionData = (token) => {
         .then((data) => data.json());
 }
 
-const escapeLink = (text) => text.replace(/[\[\]\(\)]/g, '\\$&');
+const escapeLink = (text) => {
+    return text.replace(/\./g, '.\u200C');
+}
 
 export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, auditReport = undefined, showLockStatus = false) => {
 
@@ -117,7 +119,9 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
     const chartLink = `https://www.dextools.io/app/en/ether/pair-explorer/${tokenStatistics.contractAddress}`;
     message += `\n\n[Uniswap](${uniswapLink}) \| [Etherscan](${etherscanLink}) \| [Chart](${chartLink})`;
 
-    message += `\n\n_Disclaimer: Nothing posted in this channel is financial advice but rather technical reviews of erc20 token smart contracts\. Our tools are still in BETA mode and tokens may require an additional manual review at this time\. Powered by BlackRover\.io_`;
+    message += `\n\n_Disclaimer: Nothing posted in this channel is financial advice but rather technical reviews of erc20 token smart contracts\. Our tools are still in BETA mode and tokens may require an additional manual review at this time\._`;
+
+    message += `\n\nPowered by BlackRover\.io`;
 
     return message;
 
