@@ -107,7 +107,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
                 'angle brackets',
                 'angle brackets'
             ])}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
-        }).join('\n\n') + '\n\n' : ''}*[Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)*`;
+        }).join('\n\n') + '\n\n' : ''}📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)`;
     }
 
     const uniswapLink = `https://app.uniswap.org/#/swap?inputCurrency=${tokenStatistics.contractAddress}&outputCurrency=ETH`;
