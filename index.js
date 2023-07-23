@@ -26,8 +26,9 @@ const fetchMarketData = (token) => {
 }
 
 const fetchTokenData = (token) => {
-    return fetch(`https://dapp.herokuapp.com/token-audit?contract=${token}`)
-        .then((data) => data.json());
+    return fetch(`https://api.gopluslabs.io/api/v1/token_security/1?contract_addresses=${token}`)
+        .then((data) => data.json())
+        .then((data) => data?.result?.[token]);
 }
 
 const fetchTokenMarketingWallet = (token) => {
