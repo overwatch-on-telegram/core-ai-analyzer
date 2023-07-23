@@ -81,7 +81,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 🔗 *Pair address*: ${tokenStatistics.pairAddress ? `[${tokenStatistics.pairAddress}](https://etherscan.io/address/${tokenStatistics.pairAddress})` : 'Unknown'}
 `.trim();
 
-    if (tokenStatistics.isPartiallyValidated) {
+    if (!tokenStatistics.isLocked && !tokenStatistics.isBurnt) {
         message += '\n\n🟥 Waiting for liquidity lock/burn.\n\n';
     }
 
