@@ -123,6 +123,10 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
     const tokenMarketData = await fetchMarketData(contractAddress).catch(() => null);
     const marketingWalletData = await fetchTokenMarketingWallet(contractAddress).catch(() => null);
 
+    if (tokenMarketData.error) {
+        throw new Error('Invalid contract address (market)');
+    }
+
     let pairAddress = forcePairAddress;
 
     // try to get an updated pair address
