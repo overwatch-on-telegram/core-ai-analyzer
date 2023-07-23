@@ -121,7 +121,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 
     message += `\n\n_Disclaimer: Nothing posted in this channel is financial advice but rather technical reviews of erc20 token smart contracts\. Our tools are still in BETA mode and tokens may require an additional manual review at this time\._`;
 
-    message += `\n\n_Powered by BlackRover\.io_`;
+    message += `\n\n_Powered by BlockRover\.io_`;
 
     return message;
 
