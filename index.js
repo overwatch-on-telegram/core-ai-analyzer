@@ -161,8 +161,8 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
     });
 
     const tradingSecurityProperties = [
-        {'prop': 'buy_tax', 'parse_value': (value) => parseFloat(value), 'is_positive': (value) => value === 0, 'format_value': (value) => value ? `${value*100}%` : 'Unknown', 'display_name': 'Buy Tax'},
-        {'prop': 'sell_tax', 'parse_value': (value) => parseFloat(value), 'is_positive': (value) => value === 0, 'format_value': (value) => value ? `${value*100}%` : 'Unknown', 'display_name': 'Sell Tax'},
+        {'prop': 'buy_tax', 'parse_value': (value) => parseFloat(value), 'is_positive': (value) => value === 0, 'format_value': (value) => isNaN(value) ? `${value*100}%` : 'Unknown', 'display_name': 'Buy Tax'},
+        {'prop': 'sell_tax', 'parse_value': (value) => parseFloat(value), 'is_positive': (value) => value === 0, 'format_value': (value) => isNaN(value) ? `${value*100}%` : 'Unknown', 'display_name': 'Sell Tax'},
         {'prop': 'cannot_buy', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Cannot be Bought'},
         {'prop': 'cannot_sell_all', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Cannot Sell All'},
         {'prop': 'slippage_modifiable', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Modifiable Tax'},
@@ -190,8 +190,8 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         }
     });
 
-    const isPartiallyValidated = goPlusContractSecurity.every((item) => item.isPositive)
-        && goPlusTradingSecurity.every((item) => item.isPositive && item.name !== 'Buy Tax' && item.name !== 'Sell Tax')
+    const isPartiallyValidated = goPlusContractSecurity.every((item) => item.isPositive || (item.name === 'Owner Address' || item.name === 'Open Source'))
+        && goPlusTradingSecurity.every((item) => item.isPositive || (item.name === 'Buy Tax' || item.name === 'Sell Tax' || item.name === 'In main Dex'))
         && goPlusTradingSecurity.filter((item) => item.name === 'Buy Tax' || item.name === 'Sell Tax').every((item) => item.value < 0.1);
 
     const isLockedOrBurnt = holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
