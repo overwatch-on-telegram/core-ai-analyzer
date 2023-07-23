@@ -215,7 +215,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
 
     const isLockedOrBurnt = holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
 
-    const isValidated = isPartiallyValidated && isLockedOrBurnt;
+    const isValidated = isPartiallyValidated && isLockedOrBurnt && tokenMarketData.circSupply && tokenMarketData.price_usd;
 
     return {
 
