@@ -154,6 +154,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         return {
             name: item.display_name,
             value,
+            isPositive,
             formattedValue: formatData(item.display_name, formattedValue, isPositive)
         }
     });
@@ -183,16 +184,18 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         return {
             name: item.display_name,
             value,
+            isPositive,
             formattedValue: formatData(item.display_name, formattedValue, isPositive)
         }
     });
 
-    const isHoneypot = goPlusTradingSecurity.find((item) => item.name === 'Honeypot').value;
-    const isBlacklisted = goPlusTradingSecurity.find((item) => item.name === 'Blacklist').value;
-    const isMintable = goPlusContractSecurity.find((item) => item.name === 'Mintable').value;
-    const isProxy = goPlusContractSecurity.find((item) => item.name === 'Proxy').value;
-    const modifiableTax = goPlusTradingSecurity.find((item) => item.name === 'Modifiable Tax').value;
+    const isPartiallyValidated = goPlusContractSecurity.every((item) => item.isPositive)
+        && goPlusTradingSecurity.every((item) => item.isPositive && item.name !== 'Buy Tax' && item.name !== 'Sell Tax')
+        && goPlusTradingSecurity.filter((item) => item.name === 'Buy Tax' || item.name === 'Sell Tax').every((item) => item.value < 0.1);
+
     const isLockedOrBurnt = tokenAuditData.lp_holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
+
+    const isValidated = isPartiallyValidated && isLockedOrBurnt;
 
     return {
 
@@ -213,9 +216,9 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
 
         goPlusContractSecurity,
         goPlusTradingSecurity,
-
-        isValidated: !isHoneypot && !isBlacklisted && !isMintable && !isProxy && !modifiableTax && isLockedOrBurnt,
-        isPartiallyValidated: !isHoneypot && !isBlacklisted && !isMintable && !isProxy && !modifiableTax
+        
+        isPartiallyValidated,
+        isValidated,
 
     }
 
