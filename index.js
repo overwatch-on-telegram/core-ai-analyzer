@@ -75,11 +75,15 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 📊 *Volume:* $${lastDayVolume}
 🔐 *Liquidity:* $${liquidity}
 👥 *Holders:* ${holderCount}
-#️⃣ *Holder score:* ${tokenStatistics.tokenAuditData.holderScore}
+#️⃣ *Holder score:* ${tokenStatistics.tokenAuditData.holderScore || 'Unknown'}
 📢 *Marketing Wallet:* ${tokenStatistics.marketingWalletData?.marketingAddress ? `https://etherscan.io/address/${tokenStatistics.marketingWalletData?.marketingAddress}` : 'Unknown'}
 💵 *Liquidity*: ${liquidity} (${tokenStatistics.isLocked ? `[${Math.round(tokenStatistics.lockedPercentage * 100)}%](${tokenStatistics.tokenAuditData.lpLockLink})` : `${Math.round(tokenStatistics.lockedPercentage * 100)}%`} locked, ${tokenStatistics.isBurnt ? `[${Math.round(tokenStatistics.burntPercentage * 100)}%](${tokenStatistics.tokenAuditData.burnLink})` : `${Math.round(tokenStatistics.burntPercentage * 100)}%`} burnt)
 🔗 *Pair address*: ${tokenStatistics.pairAddress ? `[${tokenStatistics.pairAddress}](https://etherscan.io/address/${tokenStatistics.pairAddress})` : 'Unknown'}
 `.trim();
+
+    if (tokenStatistics.isPartiallyValidated) {
+        message += '\n\nWaiting for liquidity lock/burn.\n\n';
+    }
 
     message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
 
