@@ -82,7 +82,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         digits: 5
     });
 
-    let message = `\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Stats*\n
+    let message = `\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Stats*__\n
 🛒 *Total Supply:* $10bn
 🏦 *Circ. Supply:* $${circSupply}
 💰 *Marketcap:* $${marketCap}
@@ -104,14 +104,14 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         }
     }
 
-    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}\n*Renounced:* ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? 'Yes ✅' : 'No ❌'}`;
+    message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*__\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}\n*Renounced:* ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? 'Yes ✅' : 'No ❌'}`;
 
-    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
+    message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*__\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
     if (showAuditReport && !auditReport) {
-        message += `\n\n$*${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
+        message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*__\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
     } else {
-        message += `\n\n$*${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
+        message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*__\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
             return `*Issue #${i+1}*\n\n${markdownEscape(issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation, [
                 'number signs',
                 'slashes',
