@@ -88,7 +88,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 👥 *Holders:* ${holderCount}
 #️⃣ *Holder score:* ${tokenStatistics.tokenAuditData.holderScore || 'Unknown'}
 📢 *Marketing Wallet:* ${tokenStatistics.marketingWalletData?.marketingAddress ? `https://etherscan.io/address/${tokenStatistics.marketingWalletData?.marketingAddress}` : 'Unknown'}
-💵 *Liquidity*: ${liquidity} (${tokenStatistics.isLocked ? `[${Math.round(tokenStatistics.lockedPercentage * 100)}%](${tokenStatistics.secondTokenAuditData.lpLockLink})` : `${Math.round(tokenStatistics.lockedPercentage * 100)}%`} locked, ${tokenStatistics.isBurnt ? `[${Math.round(tokenStatistics.burntPercentage * 100)}%](${tokenStatistics.secondTokenAuditData.burnLink})` : `${Math.round(tokenStatistics.burntPercentage * 100)}%`} burnt)
+💵 *Liquidity*: ${liquidity} (${tokenStatistics.isLocked ? `[${Math.round(tokenStatistics.lockedPercentage * 100)}% locked](${tokenStatistics.secondTokenAuditData.lpLockLink})` : `${Math.round(tokenStatistics.lockedPercentage * 100)}% locked`}, ${tokenStatistics.isBurnt ? `[${Math.round(tokenStatistics.burntPercentage * 100)}%](${tokenStatistics.secondTokenAuditData.burnLink}) burnt` : `${Math.round(tokenStatistics.burntPercentage * 100)}% burnt`})
 🔗 *Pair address*: ${tokenStatistics.pairAddress ? `[${tokenStatistics.pairAddress}](https://etherscan.io/address/${tokenStatistics.pairAddress})` : 'Unknown'}
 `.trim();
 
@@ -100,7 +100,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         }
     }
 
-    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}\nRenounced: ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? '✅' : '❌'}`;
+    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}\n*Renounced:* ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? 'Yes ✅' : 'No ❌'}`;
 
     message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
