@@ -7,8 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "repository": {"url": "https://github.com/@blockrover/goplus-ai-analyzer-js"},
+  "repository": {
+    "url": "https://github.com/@blockrover/goplus-ai-analyzer-js"
+  },
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "aveta": "^1.3.0",
+    "markdown-escape": "^2.0.0"
+  }
 }
