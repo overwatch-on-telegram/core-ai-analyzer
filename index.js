@@ -238,7 +238,7 @@ export const waitForAuditEndOrError = (contractAddress, eventEmitter) => {
                 }
                 else if (data.status === 'errored' || data.status === 'unknown') {
                     clearInterval(interval);
-                    eventEmitter.emit('send-message', '❌ ' + data.error || 'Oops, something went wrong!');
+                    eventEmitter.emit('error', '❌ ' + data.error || 'Oops, something went wrong!');
                 }
                 else if (data.status !== lastStatus) {
                     eventEmitter.emit('status-update', data.status);
