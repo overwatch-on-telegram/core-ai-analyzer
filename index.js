@@ -3,6 +3,8 @@ import markdownEscape from 'markdown-escape';
 
 export const WAITING_GENERATION_AUDIT_MESSAGE = 'Generating Audit Report...';
 
+const isDeadAddress = (address) => address.startsWith("0x0000") || address.endsWith("dead");
+
 export const triggerAudit = (token) => {
     return fetch(`https://api.blockrover.io/audit/${token}`, {
         method: 'POST'
@@ -98,7 +100,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         }
     }
 
-    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
+    message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}\nRenounced: ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? '✅' : '❌'}`;
 
     message += `\n\n*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
@@ -159,7 +161,6 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
     }
 
     const holders = tokenAuditData.lp_holders || [];
-    const isDeadAddress = (address) => address.startsWith("0x0000") || address.endsWith("dead");
     const lockedHolders = holders.filter((h) => !isDeadAddress(h.address) && h.is_locked === 1);
     const burntHolders = holders.filter((h) => isDeadAddress(h.address));
     const lockedPercentage = lockedHolders.map((holder) => parseFloat(holder.percent)).reduce((a, b) => a + b, 0);
