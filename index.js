@@ -104,7 +104,11 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         }
     }
 
-    message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*__\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}\n*Renounced:* ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? 'Yes ✅' : 'No ❌'}`;
+    message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Contract Security*__\n\n${
+        tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')
+            .replace('*{{renounced}}:*  ✅', `*Renounced:* ${(!tokenStatistics.tokenAuditData?.owner_address || isDeadAddress(tokenStatistics.tokenAuditData?.owner_address)) ? 'Yes ✅' : 'No ❌'}`)
+    }`;
+
 
     message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*__\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
@@ -122,7 +126,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
                 'angle brackets',
                 'angle brackets'
             ])}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
-        }).join('\n\n') + '\n\n\n' : ''}📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)`;
+        }).join('\n\n') + '\n\n\n📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)' : 'No Code Issues Detected.'}`;
     }
 
     const uniswapLink = `https://app.uniswap.org/#/swap?inputCurrency=${tokenStatistics.contractAddress}&outputCurrency=ETH`;
@@ -174,6 +178,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
 
     const securityProperties = [
         {'prop': 'is_open_source', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Open Source'},
+        {'prop': 'null', 'parse_value': (value) => true, 'is_positive': (value) => true, 'format_value': (value) => '', 'display_name': '{{renounced}}'},
         {'prop': 'is_proxy', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Proxy'},
         {'prop': 'is_mintable', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Mintable'},
         {'prop': 'can_take_back_ownership', 'parse_value': (value) => !!parseInt(value), 'is_positive': (value) => !value, 'format_value': (value) => value ? 'Yes' : 'No', 'display_name': 'Take Back Ownership'},
