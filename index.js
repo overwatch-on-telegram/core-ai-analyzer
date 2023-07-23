@@ -125,7 +125,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         pairAddress = tokensInfos?.secondary?.address;
     }
 
-    const holders = tokenAuditData.lp_holders;
+    const holders = tokenAuditData.lp_holders || [];
     const isDeadAddress = (address) => address.startsWith("0x0000") || address.endsWith("dead");
     const lockedHolders = holders.filter((h) => !isDeadAddress(h.address) && h.is_locked === 1);
     const burntHolders = holders.filter((h) => isDeadAddress(h.address));
@@ -193,7 +193,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         && goPlusTradingSecurity.every((item) => item.isPositive && item.name !== 'Buy Tax' && item.name !== 'Sell Tax')
         && goPlusTradingSecurity.filter((item) => item.name === 'Buy Tax' || item.name === 'Sell Tax').every((item) => item.value < 0.1);
 
-    const isLockedOrBurnt = tokenAuditData.lp_holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
+    const isLockedOrBurnt = holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
 
     const isValidated = isPartiallyValidated && isLockedOrBurnt;
 
