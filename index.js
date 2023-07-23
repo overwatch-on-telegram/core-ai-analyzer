@@ -41,7 +41,7 @@ const fetchTransactionData = (token) => {
         .then((data) => data.json());
 }
 
-export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, auditReport = undefined) => {
+export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, auditReport = undefined, showLockStatus = false) => {
 
     const marketCap = aveta(tokenStatistics.tokenMarketData.circSupply * tokenStatistics.tokenMarketData.price_usd, {
         digits: 5
@@ -81,10 +81,12 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 🔗 *Pair address*: ${tokenStatistics.pairAddress ? `[${tokenStatistics.pairAddress}](https://etherscan.io/address/${tokenStatistics.pairAddress})` : 'Unknown'}
 `.trim();
 
-    if (!tokenStatistics.isLocked && !tokenStatistics.isBurnt) {
-        message += '\n\n🟥 Waiting for liquidity lock/burn.\n\n';
-    } else {
-        message += '\n\n🟩 Liquidity is locked/burnt.\n\n';
+    if (showLockStatus) {
+        if (!tokenStatistics.isLocked && !tokenStatistics.isBurnt) {
+            message += '\n\n🟥 Waiting for liquidity lock/burn.\n\n';
+        } else {
+            message += '\n\n🟩 Liquidity is locked/burnt.\n\n';
+        }
     }
 
     message += `\n\n*$${tokenStatistics.tokenAuditData.token_name} Token Contract Security*\n\n${tokenStatistics.goPlusContractSecurity.map((item) => item.formattedValue).join('\n')}`;
@@ -105,13 +107,13 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
                 'angle brackets',
                 'angle brackets'
             ])}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
-        }).join('\n\n') : ''}\n\n[Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)`;
+        }).join('\n\n') + '\n\n' : ''}*[Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)*`;
     }
 
     const uniswapLink = `https://app.uniswap.org/#/swap?inputCurrency=${tokenStatistics.contractAddress}&outputCurrency=ETH`;
     const etherscanLink = `https://etherscan.io/token/${tokenStatistics.contractAddress}`;
     const chartLink = `https://www.dextools.io/app/en/ether/pair-explorer/${tokenStatistics.contractAddress}`;
-    message += `\n\n[Uniswap](${uniswapLink}) \\| [Etherscan](${etherscanLink}) \\| [Chart](${chartLink})`;
+    message += `\n\n[Uniswap](${uniswapLink}) \| [Etherscan](${etherscanLink}) \| [Chart](${chartLink})`;
 
     message += `\n\n_Disclaimer: Nothing posted in this channel is financial advice but rather technical reviews of erc20 token smart contracts\. Our tools are still in BETA mode and tokens may require an additional manual review at this time\. Powered by BlackRover\.io_`;
 
