@@ -9,6 +9,10 @@ export const escapeMarkdownV2 = (text) => {
     return text.replace(/[~>`>#+-={}.!]/g, '\\$&');
 }
 
+export const escapeMissingMarkdownV2Char = (text) => {
+    return text.replace(/[()]/g, '\\$&');
+}
+
 export const triggerAudit = (token) => {
     return fetch(`https://api.blockrover.io/audit/${token}`, {
         method: 'POST'
@@ -116,7 +120,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
         message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*__\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
     } else {
         message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*__\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
-            return `*Issue #${i+1}*\n\n${issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
+            return `*Issue #${i+1}*\n\n${escapeMissingMarkdownV2Char(issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation)}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
         }).join('\n\n') + '\n\n\n📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)' : 'No Code Issues Detected.'}`;
     }
 
@@ -231,7 +235,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
     const isPartiallyValidated = goPlusContractSecurity.find((i) => i.name === 'Mintable').isPositive
             && goPlusTradingSecurity.find((i) => i.name === 'Honeypot').isPositive;
 
-    const isLockedOrBurnt = holders.length > 0 && (lockedPercentage > 0.9 || burntPercentage > 0.9);
+    const isLockedOrBurnt = holders.length > 0 && (secondTokenAuditData?.burnLink || secondTokenAuditData?.lpLockLink);
 
     const isValidated = isPartiallyValidated && isLockedOrBurnt && tokenMarketData.circSupply && tokenMarketData.price_usd;
 
