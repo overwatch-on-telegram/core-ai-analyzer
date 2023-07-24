@@ -254,8 +254,8 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
         lockedPercentage,
         burntPercentage,
 
-        isLocked: lockedPercentage > 0.9,
-        isBurnt: burntPercentage > 0.9,
+        isLocked: lockedPercentage > 0.9 && secondTokenAuditData?.lpLockLink,
+        isBurnt: burntPercentage > 0.9 && secondTokenAuditData?.burnLink,
 
         goPlusContractSecurity,
         goPlusTradingSecurity,
@@ -274,6 +274,7 @@ export const waitForAuditEndOrError = (contractAddress, eventEmitter) => {
     let interval = setInterval(() => {
         fetchAuditStatus(contractAddress)
             .then(async (data) => {
+                console.log(data.status)
                 if (data.status === 'ended') {
                     clearInterval(interval);
                     const auditData = await fetchAuditData(contractAddress);
@@ -287,6 +288,10 @@ export const waitForAuditEndOrError = (contractAddress, eventEmitter) => {
                     eventEmitter.emit('status-update', data.status);
                     lastStatus = data.status;
                 }
+            })
+            .catch((error) => {
+                clearInterval(interval);
+                eventEmitter.emit('error', '❌ ' + error || 'Oops, something went wrong!');
             });
     }, 1000);
 
