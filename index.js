@@ -10,7 +10,7 @@ export const escapeMarkdownV2 = (text) => {
 }
 
 export const escapeMissingMarkdownV2Char = (text) => {
-    return text.replace(/[()]/g, '\\$&');
+    return text.replace(/[()*_]/g, '\\$&');
 }
 
 export const triggerAudit = (token) => {
