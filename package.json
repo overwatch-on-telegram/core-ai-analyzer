@@ -1,5 +1,5 @@
 {
-  "name": "@blockrover/goplus-ai-analyzer-js",
+  "name": "@luckblock/goplus-ai-analyzer-js",
   "version": "1.4.3",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "repository": {
-    "url": "https://github.com/@blockrover/goplus-ai-analyzer-js"
+    "url": "https://github.com/@luckblock/goplus-ai-analyzer-js"
   },
   "author": "",
   "license": "ISC",

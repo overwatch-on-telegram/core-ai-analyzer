@@ -14,19 +14,19 @@ export const escapeMissingMarkdownV2Char = (text) => {
 }
 
 export const triggerAudit = (token) => {
-    return fetch(`https://api.blockrover.io/audit/${token}`, {
+    return fetch(`https://api.luckblock.io/audit/${token}`, {
         method: 'POST'
     })
         .then((data) => data.json());
 }
 
 export const fetchAuditStatus = (token) => {
-    return fetch(`https://api.blockrover.io/audit/${token}/status`)
+    return fetch(`https://api.luckblock.io/audit/${token}/status`)
         .then((data) => data.json());
 }
 
 export const fetchAuditData = (token) => {
-    return fetch(`https://api.blockrover.io/audit/${token}/json`)
+    return fetch(`https://api.luckblock.io/audit/${token}/json`)
         .then((data) => data.json());
 }
 
@@ -121,7 +121,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
     } else {
         message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*__\n\n${auditReport.issues?.length > 0 ? auditReport.issues?.map((issue, i) => {
             return `*Issue #${i+1}*\n\n${escapeMissingMarkdownV2Char(issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation)}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
-        }).join('\n\n') + '\n\n\n📄 [Download PDF](https://api.blockrover.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)' : 'No Code Issues Detected.'}`;
+        }).join('\n\n') + '\n\n\n📄 [Download PDF](https://api.luckblock.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)' : 'No Code Issues Detected.'}`;
     }
 
     const uniswapLink = `https://app.uniswap.org/#/swap?inputCurrency=${tokenStatistics.contractAddress}&outputCurrency=ETH`;
@@ -131,7 +131,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 
     message += `\n\n_Disclaimer: Nothing posted in this channel is financial advice but rather technical reviews of erc20 token smart contracts\. Our tools are still in BETA mode and tokens may require an additional manual review at this time\._`;
 
-    message += `\n\n_Powered by BlockRover.io_`;
+    message += `\n\n_Powered by LuckBlock.io_`;
 
     return escapeMarkdownV2(message);
 
