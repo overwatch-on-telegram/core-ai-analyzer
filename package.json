@@ -1,5 +1,5 @@
 {
-  "name": "@luckblock/goplus-ai-analyzer-js",
+  "name": "@luckblock/core-ai-analyzer",
   "version": "1.4.3",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "repository": {
-    "url": "https://github.com/@luckblock/goplus-ai-analyzer-js"
+    "url": "https://github.com/@luckblock/core-ai-analyzer"
   },
   "author": "",
   "license": "ISC",
