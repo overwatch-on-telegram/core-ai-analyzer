@@ -1,5 +1,5 @@
 {
-  "name": "@luckblock/core-ai-analyzer",
+  "name": "@overwatch-on-telegram/core-ai-analyzer",
   "version": "1.4.3",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "repository": {
-    "url": "https://github.com/@luckblock/core-ai-analyzer"
+    "url": "https://github.com/@overwatch-on-telegram/core-ai-analyzer"
   },
   "author": "",
   "license": "ISC",
