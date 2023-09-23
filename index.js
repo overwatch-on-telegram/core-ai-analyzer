@@ -60,7 +60,7 @@ const escapeLink = (text) => {
     return text.replace(/\./g, '.\u200C');
 }
 
-export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, auditReport = undefined, showLockStatus = false) => {
+export const formatTokenStatistics = (tokenStatistics, /* showAuditReport = false, auditReport = undefined, */ showLockStatus = false) => {
 
     const marketCap = aveta(tokenStatistics.tokenMarketData.circSupply * tokenStatistics.tokenMarketData.price_usd, {
         digits: 5
@@ -116,6 +116,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
 
     message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} Token Trading Security*__\n\n${tokenStatistics.goPlusTradingSecurity.map((item) => item.formattedValue).join('\n')}`;
 
+    /*
     if (showAuditReport && !auditReport) {
         message += `\n\n__*$${escapeLink(tokenStatistics.tokenAuditData.token_name)} AI Audit*__\n\n${WAITING_GENERATION_AUDIT_MESSAGE}`;
     } else {
@@ -123,6 +124,7 @@ export const formatTokenStatistics = (tokenStatistics, showAuditReport = false, 
             return `*Issue #${i+1}*\n\n${escapeMissingMarkdownV2Char(issue.issueExplanation.length > 200 ? issue.issueExplanation.slice(0, 200) + '...' : issue.issueExplanation)}\n\n[View recommendation](${issue.issueCodeDiffUrl})`
         }).join('\n\n') + '\n\n\n📄 [Download PDF](https://api.luckblock.io/audit/${tokenStatistics?.contractAddress}/direct-pdf)' : 'No Code Issues Detected.'}`;
     }
+    */
 
     const uniswapLink = `https://app.uniswap.org/#/swap?inputCurrency=${tokenStatistics.contractAddress}&outputCurrency=ETH`;
     const etherscanLink = `https://etherscan.io/token/${tokenStatistics.contractAddress}`;
@@ -267,6 +269,7 @@ export const fetchTokenStatistics = async (contractAddress, forcePairAddress = u
 
 }
 
+/*
 export const waitForAuditEndOrError = (contractAddress, eventEmitter) => {
 
     let lastStatus = null;
@@ -296,6 +299,7 @@ export const waitForAuditEndOrError = (contractAddress, eventEmitter) => {
     }, 1000);
 
 }
+*/
 
 function getTokensInfos(transaction) {
     const primarySide = transaction.side.toLowerCase();
